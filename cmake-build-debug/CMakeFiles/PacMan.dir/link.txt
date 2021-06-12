@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/PacMan.dir/main.cpp.o CMakeFiles/PacMan.dir/Engine.cpp.o CMakeFiles/PacMan.dir/Moving.cpp.o CMakeFiles/PacMan.dir/Player.cpp.o CMakeFiles/PacMan.dir/Gnome.cpp.o CMakeFiles/PacMan.dir/Traal.cpp.o CMakeFiles/PacMan.dir/HighScore.cpp.o CMakeFiles/PacMan.dir/ScoreBoard.cpp.o -o PacMan 
