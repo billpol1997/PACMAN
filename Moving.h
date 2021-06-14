@@ -26,7 +26,7 @@ public:
 
     Moving(int x,int y);
 
-
+    ~Moving();
 
 
 

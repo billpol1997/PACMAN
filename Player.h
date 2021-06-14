@@ -15,6 +15,8 @@ class Player:public Moving{
  public:
     Player(char ch_symb,int x,int y);
 
+
+
     void Setchsymb(char ch);
     char Getchsymb();
 

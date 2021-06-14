@@ -31,7 +31,9 @@ public:
 
 
 
-    Engine(string filename,string bfilename,Player bibis,Gnome monster1,Traal monster2,ScoreBoard scoreboard);
+    Engine(Player bibis,Gnome monster1,Traal monster2,ScoreBoard scoreboard);
+
+    ~Engine();
 
 
     void CreateWindow();
@@ -79,6 +81,8 @@ public:
     void StartGame();
 
     void EndGame();
+
+    void StartEngine(string filename,string bfilename);
 
 
 

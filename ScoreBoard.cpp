@@ -42,7 +42,10 @@ ScoreBoard::ScoreBoard()
 }
 
 
+ScoreBoard::~ScoreBoard()
+{
 
+}
 
 
 

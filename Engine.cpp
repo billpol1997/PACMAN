@@ -1,29 +1,19 @@
 #include "Engine.h"
 using namespace std;
 
-Engine::Engine(string filename,string bfilename,Player bibis,Gnome monster1,Traal monster2,ScoreBoard scoreboard):bibis(bibis), monster1(monster1),monster2(monster2),scoreboard(scoreboard)
+Engine::Engine(Player bibis,Gnome monster1,Traal monster2,ScoreBoard scoreboard):bibis(bibis), monster1(monster1),monster2(monster2),scoreboard(scoreboard)
 {
-  CreateWindow();
-  scoreboard.LoadScoreBoard(bfilename);
-  InitTempscore();
-  LoadMap(filename);
-
-  GemSpawn();
-  Spawn();
-
-  StartGame();
-
-  refresh();
-
-
-  TempScore_to_ScoreBoard();
-  scoreboard.ScoreBoardSort();
-  DisplayScore();
-  scoreboard.WriteScore(bfilename);
 
 
 
-  EndGame();
+
+}
+
+
+Engine::~Engine()
+{
+ delete playwin;
+
 }
 
 
@@ -462,4 +452,30 @@ void Engine::EndGame() //ending game
 
     getch();
     endwin();
+}
+
+
+void Engine::StartEngine(string filename,string bfilename) //starting engine processes
+{
+    CreateWindow();
+    scoreboard.LoadScoreBoard(bfilename);
+    InitTempscore();
+    LoadMap(filename);
+
+    GemSpawn();
+    Spawn();
+
+    StartGame();
+
+    refresh();
+
+
+    TempScore_to_ScoreBoard();
+    scoreboard.ScoreBoardSort();
+    DisplayScore();
+    scoreboard.WriteScore(bfilename);
+
+
+
+    EndGame();
 }

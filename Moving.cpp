@@ -12,7 +12,10 @@ Moving::Moving(int x, int y) : X(x),Y(y)
 
 
 
+Moving::~Moving()
+{
 
+}
 
 
 

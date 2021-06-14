@@ -11,7 +11,10 @@ HighScore::HighScore(char *name, int score)
 }
 
 
+HighScore::~HighScore()
+{
 
+}
 
 
 

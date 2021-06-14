@@ -19,6 +19,7 @@ public:
     HighScore& operator [](int idx);
 
     ScoreBoard();
+    ~ScoreBoard();
 
 
 

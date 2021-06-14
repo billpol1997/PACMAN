@@ -11,7 +11,16 @@ int main(int argc,char **argv)
     Gnome monster1 = Gnome('o',0,0);
     Traal monster2 = Traal('w',0,0);
     ScoreBoard scoreboard = ScoreBoard();
-    Engine eng(argv[1],argv[2],bibis,monster1,monster2,scoreboard);
+    Engine eng(bibis,monster1,monster2,scoreboard);
+
+    eng.StartEngine(argv[1],argv[2]);
+
+
+
+
+
+
+
 
     return 0;
 }

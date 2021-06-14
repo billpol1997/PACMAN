@@ -13,6 +13,7 @@ Player::Player( char ch_symb,int x,int y) : Moving(y,x)
 
 
 
+
 void Player::Setchsymb(char ch)
 {
     ch_symb = ch;
