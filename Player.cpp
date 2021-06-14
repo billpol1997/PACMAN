@@ -25,7 +25,7 @@ char Player::Getchsymb()
     return ch_symb;
 }
 
-
+//getting input from user for player moves
 
 int Player::Getmv(int choice)
 {

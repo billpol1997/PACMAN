@@ -29,7 +29,7 @@ char Traal::Getchsymb()
 }
 
 
-
+//object's algorithm for moving
 void Traal::Mv(int playery, int playerx,bool check)
 {
     int disty = this->GetY() - playery;

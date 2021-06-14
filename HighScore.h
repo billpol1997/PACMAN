@@ -16,7 +16,7 @@ private:
 
 public:
 
-    HighScore() = default;
+    HighScore() = default; //default constructor
     HighScore(char *name,int score);
 
     void SetName(const char *name);

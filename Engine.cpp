@@ -1,32 +1,29 @@
 #include "Engine.h"
 using namespace std;
 
-Engine::Engine(string filename,Player bibis,Gnome monster1,Traal monster2,ScoreBoard scoreboard):bibis(bibis), monster1(monster1),monster2(monster2),scoreBoard(scoreboard)
+Engine::Engine(string filename,string bfilename,Player bibis,Gnome monster1,Traal monster2,ScoreBoard scoreboard):bibis(bibis), monster1(monster1),monster2(monster2),scoreboard(scoreboard)
 {
   CreateWindow();
+  scoreboard.LoadScoreBoard(bfilename);
+  InitTempscore();
   LoadMap(filename);
 
   GemSpawn();
   Spawn();
-  while(running)
-  {
-      refresh();
-      wrefresh(playwin);
-      getch();
 
-      Update();
+  StartGame();
+
+  refresh();
 
 
-  }
-
-
+  TempScore_to_ScoreBoard();
+  scoreboard.ScoreBoardSort();
+  DisplayScore();
+  scoreboard.WriteScore(bfilename);
 
 
 
-
-
-    getch();
-    endwin();
+  EndGame();
 }
 
 
@@ -53,6 +50,17 @@ void Engine::CreateWindow()
 
 }
 
+
+void Engine::InitTempscore() //takes the name of current player and initializes score to 0
+{
+    wprintw(playwin,"Enter name ");
+    char * n;
+    wgetstr(playwin,n);
+    tmpscore->SetName(n);
+    tmpscore->SetScore(0);
+
+
+}
 
 
 void Engine::LoadMap(string filename) //initialize map
@@ -135,7 +143,15 @@ void Engine::GemSpawn() //initialize pos for gems
 }
 
 
+void Engine::ParchmentSpawn() //initialize parchment when all gems are taken
+{
+    int *randij;
 
+    RandomPos(randij);
+    mvwaddch(playwin,randij[0],randij[1],'#');
+
+
+}
 
 
 void Engine::Spawn() //initialize pos for objects
@@ -239,9 +255,9 @@ bool Engine::WallCheck(int yloc, int xloc) //checks for collision with wall
 }
 
 
-bool Engine::WallMon1Check(int y, int x)
+bool Engine::WallMon1Check(int y, int x) //check for monster1 for collision with walls,gems,parchment and monster2
 {
-    if(Map[y][x] == '*'|| Map[y][x] == '@'|| Map[y][x] != Map[monster2.GetY()][monster2.GetX()])
+    if(Map[y][x] == '*'|| Map[y][x] == '@'|| Map[y][x] == '#' || Map[y][x] != Map[monster2.GetY()][monster2.GetX()])
     {
         return true;
     }
@@ -249,9 +265,9 @@ bool Engine::WallMon1Check(int y, int x)
     return false;
 }
 
-bool Engine::WallMon2Check(int y, int x)
+bool Engine::WallMon2Check(int y, int x) //check for monster2 for collision with walls,gems,parchment and monster1
 {
-    if(Map[y][x] == '*'|| Map[y][x] == '@'|| Map[y][x] != Map[monster1.GetY()][monster1.GetX()])
+    if(Map[y][x] == '*'|| Map[y][x] == '@'|| Map[y][x] == '#' ||Map[y][x] != Map[monster1.GetY()][monster1.GetX()])
     {
         return true;
     }
@@ -260,7 +276,16 @@ bool Engine::WallMon2Check(int y, int x)
 }
 
 
-void Engine::Playmove()
+void Engine::LostGame() //losing the game
+{
+    wprintw(playwin,"You Lost,nice try though");
+
+    running = false;
+
+}
+
+
+void Engine::Playmove() // player moving
 {
     int choice = Takechoice();
 
@@ -285,37 +310,72 @@ void Engine::Playmove()
 
 void Engine::ColCheck() //checks if any of the monsters,gems or parchment and the player collide
 {
+    int scr = tmpscore->GetScore();
     if(Map[bibis.GetY()][bibis.GetX()] == '@')
     {
         Display(bibis.GetY(),bibis.GetX(),bibis.Getchsymb());
+        scr +=10;
+        tmpscore->SetScore(scr);
 
 
     }
 
-
+    if(Map[bibis.GetY()][bibis.GetX()] == '#')
+    {
+        Display(bibis.GetY(),bibis.GetX(),bibis.Getchsymb());
+        scr +=100;
+        tmpscore->SetScore(scr);
+        WinGame();
+    }
 
 
     if(bibis.GetY() == monster1.GetY() && bibis.GetY() == monster1.GetX())
     {
-        wprintw(playwin,"You Lost");
-
-        running = false;
-        getch();
-        endwin();
+       LostGame();
     }
     if(bibis.GetY() == monster2.GetY() && bibis.GetY() == monster2.GetX())
     {
-        wprintw(playwin,"You Lost");
-
-        running = false;
-        getch();
-        endwin();
+        LostGame();
     }
+
 
 
 }
 
 
+
+void Engine::TempScore_to_ScoreBoard() //stores the game score to the scoreboard
+{
+    if(tmpscore->GetScore()>scoreboard.Board[4].GetScore())
+    {
+        scoreboard.Board[4].SetScore(tmpscore->GetScore());
+        wprintw(playwin,"Congrats you are  in the top 5");
+        wprintw(playwin,"Your score is");
+        wprintw(playwin,(char *)(tmpscore->GetScore()));
+    }else
+    {
+        wprintw(playwin,"Sorry you are not in the top 5");
+        wprintw(playwin,"Your score is");
+        wprintw(playwin,(char *)(tmpscore->GetScore()));
+    }
+
+}
+
+void Engine::DisplayScore() //printing scoreboard
+{
+    for(int i=0;i<5;i++)
+    {
+        wprintw(playwin,(char *)( (i++) +' '+ scoreboard.Board[i].GetName() +' '+ scoreboard.Board[i].GetScore()));
+    }
+}
+
+void Engine::WinGame() //winning the game
+{
+    wprintw(playwin,"Congrats,you won!!!!");
+
+    running = false;
+
+}
 
 void Engine::Update() //updating map and objects
 {
@@ -363,20 +423,10 @@ void Engine::Update() //updating map and objects
 
     ColCheck();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    if(tmpscore->GetScore()==100)
+    {
+        ParchmentSpawn();
+    }
 
 
   refresh();
@@ -391,3 +441,25 @@ void Engine::Update() //updating map and objects
 }
 
 
+
+void Engine::StartGame() //start running game
+{
+    while(running)
+    {
+        refresh();
+        wrefresh(playwin);
+        getch();
+
+        Update();
+
+
+    }
+}
+
+
+void Engine::EndGame() //ending game
+{
+
+    getch();
+    endwin();
+}

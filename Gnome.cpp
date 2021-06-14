@@ -25,7 +25,7 @@ char Gnome::Getchsymb()
 }
 
 
-
+//object's algorithm for moving
 
 void Gnome::Mv(int playery, int playerx,bool check)
 {

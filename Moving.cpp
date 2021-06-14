@@ -75,7 +75,7 @@ char Moving::GetChar()
 }
 
 
-
+//Object moves
 
 void Moving::Nomv()
 {

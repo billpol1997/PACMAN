@@ -13,7 +13,7 @@ class ScoreBoard {
 
 public:
 
-    array<HighScore,5>Board;
+    array<HighScore,5>Board; //array of objects of HighScore
 
 
     HighScore& operator [](int idx);

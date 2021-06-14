@@ -1,7 +1,7 @@
 #include "ScoreBoard.h"
 
 using namespace std;
-string* Split(const string &str, char delim)
+string* Split(const string &str, char delim) //splits string in 2
 {
     string tokens[2];
     size_t prev = 0,pos=0;
@@ -22,7 +22,7 @@ string* Split(const string &str, char delim)
     return tokens;
 
 }
-HighScore & ScoreBoard::operator[](int idx)
+HighScore & ScoreBoard::operator[](int idx) //for easier use of object array
 {
     return Board[idx];
 }
@@ -31,7 +31,7 @@ HighScore & ScoreBoard::operator[](int idx)
 
 ScoreBoard::ScoreBoard()
 {
-    Board ={HighScore(" ",0),
+    Board ={HighScore(" ",0), //default board
             HighScore(" ",0),
             HighScore(" ",0),
             HighScore(" ",0),
@@ -47,7 +47,7 @@ ScoreBoard::ScoreBoard()
 
 
 
-void ScoreBoard::LoadScoreBoard(const string &bfilename)
+void ScoreBoard::LoadScoreBoard(const string &bfilename) //reads from file
 {
     string brd[5];
 
@@ -82,7 +82,7 @@ void ScoreBoard::LoadScoreBoard(const string &bfilename)
 }
 
 
-void ScoreBoard::WriteScore(const string &bfilename)
+void ScoreBoard::WriteScore(const string &bfilename) //writes to file
 {
     string brd[5];
     for(int i=0;i<5;i++)
@@ -112,10 +112,8 @@ void ScoreBoard::WriteScore(const string &bfilename)
 
 
 
-void ScoreBoard::ScoreBoardSort()
+void ScoreBoard::ScoreBoardSort() //sorting board
 {
-    int n = sizeof(Board) / sizeof(Board[0]);
-
     sort(Board.begin(),Board.end(),[](const HighScore &h1,const HighScore &h2){
         return h1.GetScore()>h2.GetScore();
     });
